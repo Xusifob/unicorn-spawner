@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<style type="text/css">
+    div.a {
+        background-image: url('unicorn.png');
+        position:fixed;
+        top: 50%;
+        left: 50%;
+        cursor: pointer;
+        width: 70px;
+        height: 70px;
+        background-size: contain;
+    }
+</style>
+
+<div class='a'></div>
+<div class='a'></div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        animateDiv();
+
+        $('body').on('click','.a',function () {
+            $('body').append('<div class="a"></div><div class="a"></div>');
+            animateDiv();
+        })
+
+    });
+
+    function makeNewPosition(){
+
+        // Get viewport dimensions (remove the dimension of the div)
+        var h = $(window).height()/1.5;
+        var w = $(window).width()/1.5;
+
+        var nh = Math.floor(Math.random() * h);
+        var nw = Math.floor(Math.random() * w);
+
+        return [nh,nw];
+
+    }
+
+    function animateDiv(elem){
+
+        elem = elem || $('.a');
+
+        elem.each(function () {
+            $(this).yolo();
+
+        });
+
+    };
+
+
+
+
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+
+    jQuery.fn.yolo = function() {
+
+        var degrees = getRandomInt(0,360);
+        var newq = makeNewPosition();
+        var anim = getRandomInt(1400,5600);
+        var width = getRandomInt(70,300);
+        var height = 548*width/510;
+
+        $(this).css({'-webkit-transform' : 'rotate('+ degrees +'deg)',
+            '-moz-transform' : 'rotate('+ degrees +'deg)',
+            '-ms-transform' : 'rotate('+ degrees +'deg)',
+            'transform' : 'rotate('+ degrees +'deg)',
+            'width' : width + 'px',
+            'height' : height + 'px',
+            'transition' : 'transform '+ anim +'ms ease,' + 'width '+ anim +'ms ease,' + 'height '+ anim +'ms ease',
+        });
+
+        $(this).animate({ top: newq[0], left: newq[1] },anim, function(){
+            animateDiv($(this));
+        });
+
+        return $(this);
+    };
+
+</script>
+
+</html>
